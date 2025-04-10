@@ -2,10 +2,82 @@
 title: "portfolio-planning"
 ---
 
-## Quarto
+## Data Description
 
-Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+1.  The data source for the data I will be exploring, Global Holidays and Travel, comes from the article "Global holiday datasets for Understanding seasonal human mobility and population dynamics" by Shengjie Lai (et al). The data is accessible though the WorldPop project and through Github.
+
+2.  The Global Holiday Dataset contains structured data based on public and school holidays along with the airline passenger statistics. The vvariables are broken down as followed:
+
+    global_holidays.csv
+
+    -   ADM_name (string)
+
+    -   ISO3 (String)
+
+    -   Date (date)
+
+    -   Name (String)
+
+    -   Type (String)
+
+    monthly_passengers.csv
+
+    -   ISO3 (String)
+
+    -   Year (integer)
+
+    -   Month (integer)
+
+    -   Total (double)
+
+    -   Domestic (double)
+
+    -   International (double)
+
+    -   Total_OS (double)
+
+3.  Research Questions:
+
+    1.  Do school holidays influence travel patterns more than public holidays?
+    2.  How do passenger numbers oscillate around major U.S holidays?
+    3.  Do certain states or cities experience a greater travel surge on specific holidays?
+
+### Data Visualization
+
+1.  I want to focus on highlighting the correlations between holidays and travel patterns as well as highlight any regional differences for travel patterns. I want to include multiple visuals of my chosen questions by incorporating the proper graph for each question.
+2.  What do you want to highlight on your final visualizations in your research questions? How do you plan to do that? : I want to to ultimatley include various visuals in my project. I want to include a line graph to present a visual graph that compares the travel patterns of school holiday vs. public holidays. To visualize the oscillating numbers of passengers around holidays I would use a histogram and to visualize the surge of travel time around the holidays I would use a choropleth map.
+3.  what is missing from your data orr would need to change in your data yo create these visualization : I want to mainly focus on U.S holidays so I will need to manipulate the data to only include U.S holidays. Additionally I will need to specifically determine the daily passenger data.
+
+### Data Cleaning
+
+1.  Yes, I may need to reformat variables into different types such as converting holiday and flight dates into standard date format. Since I will be focusing on U.S holidays I will need to remove any international holiday that is not recognized in the U.S.
+2.  I don't believe I will need to deal with missing data.
+3.  Yes I will need to filter my data. Since I only want to focus on U.S holidays and their relevent flight patterns I will need to remove all the rows not related to U.S holidays. I will also need to ensure that I only work with data that focuses on flight patterns in the U.S, excluding any that are non-U.S countries. I will also need to filter the Holiday types into school or public holidays. Additionally I will need to filter airports that have a certain passenger capacity.
+4.  Yes, I will need to create new variables such as the change in passenger size during holidays by finding the difference in holiday passenger size and normal passenger size.
+5.  Yes, I think I may need to join my data since i am given to data sets.
+6.  Yes, I can exclude the variables that to not pertain to any U.S base, whether it be holiday or airport travel pattern.
+7.  I don not believe I will need to pivot my data in any way.
+8.  Yes, I will need to summarize some variables such as the passenger size to determine the diffence during school holiday, public holiday, and regular travel motion. I will need to determine the total passenger size by month. To determine the travel surge I will need to do something similar and find the percentage by finding the difference of passenger size during holidays and normal size before dividing it by the normal size and multiplying it by 100 to get a percentage. Lastly I will need to identify the highest passenger size before and after holidays.
+9.  I don't believe I need to fix any additional aspect of my data to create my data visualizations.
 
 ```{r}
-1 + 1
+#| label: global-holiday-and-travel-data
+#| echo: FALSE
+library(tidyverse)
+library(withr)
+
+url <- "https://data.worldpop.org/GIS/Holiday_Data/public_holidays/public_holidays_2010_2019.zip"
+path <- withr::local_tempfile(fileext = ".zip")
+download.file(url, path)
+global_holidays <- readr::read_csv(path) |> 
+  dplyr::mutate(Date = lubridate::dmy(Date))
+
+
+url <- "https://data.worldpop.org/GIS/Flight_Data/monthly_volume_of_airline_passengers/monthly_vol_of_airline_pass_in_90_countries_2010_2018.zip"
+path <- withr::local_tempfile(fileext = ".zip")
+download.file(url, path)
+monthly_passengers <- readr::read_csv(path) |>
+  dplyr::mutate(
+    dplyr::across(c(Year, Month), as.integer)
+  )
 ```

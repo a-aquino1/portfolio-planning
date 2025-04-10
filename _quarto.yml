@@ -2,4 +2,6 @@ project:
   title: "portfolio-planning"
 
 editor: visual
+format: html
+echo: FALSE
 
