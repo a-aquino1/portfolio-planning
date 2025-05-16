@@ -95,8 +95,8 @@ ul.task-list li input[type="checkbox"] {
 <section id="data-visualization" class="level3">
 <h3 class="anchored" data-anchor-id="data-visualization">Data Visualization</h3>
 <ol type="1">
-<li>I want to focus on highlighting the correlations between holidays and travel patterns as well as highlight any regional differences for travel patterns. I want to include multiple visuals of my chosen questions by incorporating the proper graph for each question.</li>
-<li>What do you want to highlight on your final visualizations in your research questions? How do you plan to do that? : I want to to ultimately include various visuals in my project. I want to include a line graph to present a visual graph that compares the travel patterns of school holiday vs.&nbsp;public holidays. To visualize the oscillating numbers of passengers around holidays I would use a histogram and to visualize the surge of travel time around the holidays I would use a bar chart.</li>
+<li>I want to focus on highlighting the correlations between holidays and travel patterns. I want to include multiple visuals of my chosen questions by incorporating the proper graph for each question.</li>
+<li>What do you want to highlight on your final visualizations in your research questions? How do you plan to do that? : I want to to ultimately include various visuals in my project. I want to include a bar graph to present a visual that compares the travel patterns of school holiday vs.&nbsp;public holidays. To visualize the oscillating numbers of passengers around holidays I would use a histogram and to visualize the surge of travel time around the holidays I would use a bar chart.</li>
 <li>what is missing from your data or would need to change in your data to create these visualization : I want to mainly focus on U.S holidays so I will need to manipulate the data to only include U.S holidays. Additionally I will need to specifically determine the daily passenger data.</li>
 </ol>
 </section>
@@ -131,6 +131,14 @@ Delimiter: ","
 chr (5): ADM_name, ISO3, Date, Name, Type
 
 ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+Rows: 7242 Columns: 7
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr (1): ISO3
+dbl (6): Year, Month, Total, Domestic, International, Total_OS
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
 ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
 </div>
 </div>
@@ -140,40 +148,42 @@ chr (5): ADM_name, ISO3, Date, Name, Type
 <h2 class="anchored" data-anchor-id="data-cleaning-and-preparation">Data Cleaning and Preparation</h2>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 1,079 × 5
-   ADM_name ISO3  Date       Name                          Type      
-   &lt;chr&gt;    &lt;chr&gt; &lt;date&gt;     &lt;chr&gt;                         &lt;chr&gt;     
- 1 Us       USA   2010-04-13 National Library Workers' Day Observance
- 2 Us       USA   2011-04-12 National Library Workers' Day Observance
- 3 Us       USA   2012-04-17 National Library Workers' Day Observance
- 4 Us       USA   2013-04-16 National Library Workers' Day Observance
- 5 Us       USA   2014-04-15 National Library Workers' Day Observance
- 6 Us       USA   2015-04-14 National Library Workers' Day Observance
- 7 Us       USA   2016-04-12 National Library Workers' Day Observance
- 8 Us       USA   2017-04-11 National Library Workers' Day Observance
- 9 Us       USA   2018-04-10 National Library Workers' Day Observance
-10 Us       USA   2019-04-09 National Library Workers' Day Observance
-# ℹ 1,069 more rows</code></pre>
-</div>
-</div>
-<div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 102 × 5
-   ADM_name ISO3  Date       Name                       Type          
-   &lt;chr&gt;    &lt;chr&gt; &lt;date&gt;     &lt;chr&gt;                      &lt;chr&gt;         
- 1 Us       USA   2010-01-18 Martin Luther King Jr. Day Public holiday
- 2 Us       USA   2010-02-15 Presidents' Day            Public holiday
- 3 Us       USA   2010-05-31 Memorial Day               Public holiday
- 4 Us       USA   2010-07-04 Independence Day           Public holiday
- 5 Us       USA   2010-07-05 Independence Day observed  Public holiday
- 6 Us       USA   2010-09-06 Labor Day                  Public holiday
- 7 Us       USA   2010-10-11 Columbus Day               Public holiday
- 8 Us       USA   2010-11-11 Veterans Day               Public holiday
- 9 Us       USA   2010-11-25 Thanksgiving Day           Public holiday
-10 Us       USA   2010-12-24 Christmas Day observed     Public holiday
+<pre><code># A tibble: 102 × 7
+   ADM_name ISO3  Date       Name                       Type          Year Month
+   &lt;chr&gt;    &lt;chr&gt; &lt;date&gt;     &lt;chr&gt;                      &lt;chr&gt;        &lt;dbl&gt; &lt;dbl&gt;
+ 1 Us       USA   2010-01-18 Martin Luther King Jr. Day Public holi…  2010     1
+ 2 Us       USA   2010-02-15 Presidents' Day            Public holi…  2010     2
+ 3 Us       USA   2010-05-31 Memorial Day               Public holi…  2010     5
+ 4 Us       USA   2010-07-04 Independence Day           Public holi…  2010     7
+ 5 Us       USA   2010-07-05 Independence Day observed  Public holi…  2010     7
+ 6 Us       USA   2010-09-06 Labor Day                  Public holi…  2010     9
+ 7 Us       USA   2010-10-11 Columbus Day               Public holi…  2010    10
+ 8 Us       USA   2010-11-11 Veterans Day               Public holi…  2010    11
+ 9 Us       USA   2010-11-25 Thanksgiving Day           Public holi…  2010    11
+10 Us       USA   2010-12-24 Christmas Day observed     Public holi…  2010    12
 # ℹ 92 more rows</code></pre>
 </div>
 </div>
+<p>hfhfb</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 108 × 7
+   ISO3   Year Month Total Domestic International Total_OS
+   &lt;chr&gt; &lt;int&gt; &lt;int&gt; &lt;dbl&gt;    &lt;dbl&gt;         &lt;dbl&gt;    &lt;dbl&gt;
+ 1 USA    2010     1 53043    45720          7323   95386.
+ 2 USA    2010     2 49091    42634          6456   87790.
+ 3 USA    2010     3 62735    54673          8062  111730.
+ 4 USA    2010     4 60145    52738          7407  108069.
+ 5 USA    2010     5 61941    54078          7863  111643.
+ 6 USA    2010     6 65515    56939          8576  117370.
+ 7 USA    2010     7 69078    59417          9662  123364.
+ 8 USA    2010     8 66814    57645          9170  119523.
+ 9 USA    2010     9 57842    50601          7241  104497.
+10 USA    2010    10 62648    55146          7501  113178.
+# ℹ 98 more rows</code></pre>
+</div>
+</div>
+<p>Since there was no recognized school holidays, as every school districts have their own calenar system, I chose to make a list of the most notable school break and vaugly when they are present or “celebrated”Since there was no recognized school holidays, as every school districts have their own calendar system, I chose to make a list of the most notable school break and vaugely when they are present or “celebrated”</p>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>$`Spring Break`
@@ -187,6 +197,101 @@ $`Thanksgiving Break`
 
 $`Winter Break`
 [1] "December-January"</code></pre>
+</div>
+</div>
+<section id="explanation" class="level3">
+<h3 class="anchored" data-anchor-id="explanation">Explanation:</h3>
+<p>I wanted to focus on filtering the data I will mainly be working with such as working only with US based holiday data to connect it to relevant flight patterns. Additionally since I want to be comparing the flight patterns and how whether public or school holidays create a greater surge of passengers I decided to filter out the public holidays. As every school district follows a different calendar systems and may have unique holidays, I decided to make a list of the four major schools breaks that students may experience. As stated before since schools have dfferent calendars I decided to be vague on wen these breaks occur, an not focus on specifics since every school have different academic calendars.</p>
+</section>
+</section>
+<section id="travel-trends-by-holiday-type" class="level2">
+<h2 class="anchored" data-anchor-id="travel-trends-by-holiday-type">Travel Trends by Holiday Type</h2>
+<div class="cell">
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: There was 1 warning in `summarize()`.
+ℹ In argument: `across(c(Total, Domestic, International, Total_OS), mean, na.rm
+  = TRUE)`.
+ℹ In group 1: `Holiday_type = "Fall Break"`.
+Caused by warning:
+! The `...` argument of `across()` is deprecated as of dplyr 1.1.0.
+Supply arguments directly to `.fns` through an anonymous function instead.
+
+  # Previously
+  across(a:b, mean, na.rm = TRUE)
+
+  # Now
+  across(a:b, \(x) mean(x, na.rm = TRUE))</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 5 × 5
+  Holiday_type    Total Domestic International Total_OS
+  &lt;chr&gt;           &lt;dbl&gt;    &lt;dbl&gt;         &lt;dbl&gt;    &lt;dbl&gt;
+1 Summer Break   72518.   62448.        10070.  130795.
+2 Spring Break   66722.   58110.         8612.  120337.
+3 Fall Break     64157.   56686.         7471.  115819.
+4 Public holiday 63031.   55187.         7844.  114484.
+5 Winter Break   61737.   53443.         8294.  111478.</code></pre>
+</div>
+</div>
+<section id="travel-trend" class="level4">
+<h4 class="anchored" data-anchor-id="travel-trend">Travel Trend</h4>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="portfolio-planning_files/figure-html/travel-trends-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="how-passenger-numbers-fluctuate-around-major-u.s-holidays" class="level2">
+<h2 class="anchored" data-anchor-id="how-passenger-numbers-fluctuate-around-major-u.s-holidays">How Passenger Numbers Fluctuate Around Major U.S Holidays</h2>
+<div class="cell">
+<div class="cell-output cell-output-stderr">
+<pre><code>`summarise()` has grouped output by 'Month'. You can override using the
+`.groups` argument.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 46 × 3
+# Groups:   Month [6]
+   Month  Year avg_passengers
+   &lt;dbl&gt; &lt;dbl&gt;          &lt;dbl&gt;
+ 1     1  2017          62949
+ 2     5  2010          61941
+ 3     5  2011          64348
+ 4     5  2012          64126
+ 5     5  2013          65208
+ 6     5  2014          66912
+ 7     5  2015          69353
+ 8     5  2016          71873
+ 9     5  2017          74011
+10     5  2018          77706
+# ℹ 36 more rows</code></pre>
+</div>
+</div>
+<div class="cell" data-lable="normal-passenger-numbers">
+<div class="cell-output cell-output-stderr">
+<pre><code>`summarise()` has grouped output by 'Month'. You can override using the
+`.groups` argument.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 78 × 3
+# Groups:   Month [10]
+   Month  Year avg_passengers
+   &lt;dbl&gt; &lt;dbl&gt;          &lt;dbl&gt;
+ 1     1  2010          53043
+ 2     1  2011          54179
+ 3     1  2012          54929
+ 4     1  2013          55797
+ 5     1  2014          56265
+ 6     1  2015          58229
+ 7     1  2016          61202
+ 8     1  2017          62949
+ 9     1  2018          64786
+10     2  2010          49091
+# ℹ 68 more rows</code></pre>
 </div>
 </div>
 </section>

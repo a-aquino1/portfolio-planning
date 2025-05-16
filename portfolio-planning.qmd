@@ -44,8 +44,8 @@ title: "portfolio-planning"
 
 ### Data Visualization
 
-1.  I want to focus on highlighting the correlations between holidays and travel patterns as well as highlight any regional differences for travel patterns. I want to include multiple visuals of my chosen questions by incorporating the proper graph for each question.
-2.  What do you want to highlight on your final visualizations in your research questions? How do you plan to do that? : I want to to ultimately include various visuals in my project. I want to include a line graph to present a visual graph that compares the travel patterns of school holiday vs. public holidays. To visualize the oscillating numbers of passengers around holidays I would use a histogram and to visualize the surge of travel time around the holidays I would use a bar chart.
+1.  I want to focus on highlighting the correlations between holidays and travel patterns. I want to include multiple visuals of my chosen questions by incorporating the proper graph for each question.
+2.  What do you want to highlight on your final visualizations in your research questions? How do you plan to do that? : I want to to ultimately include various visuals in my project. I want to include a bar graph to present a visual that compares the travel patterns of school holiday vs. public holidays. To visualize the oscillating numbers of passengers around holidays I would use a histogram and to visualize the surge of travel time around the holidays I would use a bar chart.
 3.  what is missing from your data or would need to change in your data to create these visualization : I want to mainly focus on U.S holidays so I will need to manipulate the data to only include U.S holidays. Additionally I will need to specifically determine the daily passenger data.
 
 ### Data Cleaning
@@ -76,26 +76,42 @@ global_holidays <- readr::read_csv(path) |>
 url <- "https://data.worldpop.org/GIS/Flight_Data/monthly_volume_of_airline_passengers/monthly_vol_of_airline_pass_in_90_countries_2010_2018.zip"
 path <- withr::local_tempfile(fileext = ".zip")
 download.file(url, path)
+monthly_passengers <- readr::read_csv(path) |>
+  dplyr::mutate(
+    dplyr::across(c(Year, Month), as.integer)
+  )
 ```
 
 ## Data Cleaning and Preparation
 
 ```{r}
 #| label: U.S-holidays
-us_holidays <- global_holidays |>
-  filter(ISO3 == "USA")
+global_holidays_cleaned <- global_holidays |>
+  filter(ISO3 == "USA", 
+         Type == "Public holiday") |>
+  mutate(Year = year(Date), 
+         Month = month(Date))
 
-print(us_holidays)
+print(global_holidays_cleaned)
+#filtered out the US holidays only as I want to mainly focus on US based holidays to narrow the data.
 
 ```
+
+hfhfb
 
 ```{r}
-#| label: public-holidays
-us_public_holidays <- us_holidays |>
-  filter(Type == "Public holiday")
+#| label: us-passengers
+ 
+monthly_passengers_cleaned <- monthly_passengers |>
+  filter(ISO3 == "USA")
+  
+  
+print(monthly_passengers_cleaned)
 
-print(us_public_holidays)
+#filtered to get only us passengers
 ```
+
+Since there was no recognized school holidays, as every school districts have their own calenar system, I chose to make a list of the most notable school break and vaugly when they are present or "celebrated"Since there was no recognized school holidays, as every school districts have their own calendar system, I chose to make a list of the most notable school break and vaugely when they are present or "celebrated"
 
 ```{r}
 #| label: us_school_holidays
@@ -105,4 +121,107 @@ us_school_breaks <- list("Spring Break" = "March",
                          "Winter Break" = "December-January")
 
 print(us_school_breaks)
+
+#created a list of the four major school breaks and its vauge data to account for the different school calendars.
+
+```
+
+### Explanation:
+
+I wanted to focus on filtering the data I will mainly be working with such as working only with US based holiday data to connect it to relevant flight patterns. Additionally since I want to be comparing the flight patterns and how whether public or school holidays create a greater surge of passengers I decided to filter out the public holidays. As every school district follows a different calendar systems and may have unique holidays, I decided to make a list of the four major schools breaks that students may experience. As stated before since schools have dfferent calendars I decided to be vague on wen these breaks occur, an not focus on specifics since every school have different academic calendars.
+
+## Travel Trends by Holiday Type
+
+```{r}
+#| label: travel-trends-by-school-holiday
+
+travel_trend <- monthly_passengers_cleaned |>
+  left_join(global_holidays_cleaned, by = c("ISO3",
+                                            "Year",
+                                            "Month")) |>
+  mutate(Holiday_type = case_when(Month %in% c(3,4) ~ "Spring Break",
+                                    Month %in% c(6:8)~"Summer Break",
+                                    Month %in% c(11) ~ "Fall Break",
+                                    Month %in% c(12, 1)~ "Winter Break", 
+                                    Type == "Public holiday" ~ "Public holiday")) |>
+  group_by(Holiday_type) |>
+summarize(across(c(Total, Domestic, International, Total_OS), mean, na.rm = TRUE))|>
+  arrange(desc(Total))
+
+print(travel_trend)
+  
+# search up how to include my makeshift school breaks.\/holidays into the data and how to determine the dates. Looked into if-else and case_whne in the Rstudio book.
+  
+```
+
+#### Travel Trend
+
+```{r}
+#| label: travel-trends
+
+ggplot(travel_trend, aes(x = Holiday_type, 
+                         y = Total,
+                         fill = Holiday_type)) +
+  geom_bar(stat = "identity", show.legend = FALSE) +
+  labs(title = "Passenger Travel Trends: School vs. Public Holidays",
+       x = "Holiday Type",
+       y = "Average Monthly Passengers") +
+  scale_y_continuous(breaks = seq(20000,80000, by = 20000 )) +
+  theme_bw()
+```
+
+## How Passenger Numbers Fluctuate Around Major U.S Holidays
+
+Solely focusing on the most major holidays celebrated in the U.S we can determine the average passengers that traveled. Additionally choosing to not include the day after or before was a choice made to be able to determine how many travel the day of the major holiday.
+
+```{r}
+#| label: major-holiday-passenger-numbers
+
+major_holiday_trend <- monthly_passengers_cleaned |>
+  left_join(global_holidays_cleaned, by = c("Year",
+                                            "Month")) |>
+  filter(Name %in% c("Thanksgiving Day",
+                     "Christmas Day",
+                     "New Year's Day",
+                     "Independence Day",
+                     "Memorial Day",
+                     "Labor Day")) |>
+  
+  group_by(Month) |>
+  summarize(avg_passengers = mean(Total, na.rm = TRUE))
+
+
+
+print(major_holiday_trend)
+  
+
+
+```
+
+By excluding the major holidays celebrated in the United States then well will be able to obtain the average or normal rate of passengers traveled.
+
+```{r}
+#| lable: normal-passenger-numbers
+
+normal_passenger_trends <- monthly_passengers_cleaned |>
+  left_join(global_holidays_cleaned, by = c("Year", "Month")) |>
+  filter(!Name %in% c("Thanksgiving Day",
+                     "Christmas Day",
+                     "New Year's Day",
+                     "Independence Day",
+                     "Memorial Day",
+                     "Labor Day")) |>
+  group_by(Month) |>
+  summarize(avg_passengers = mean(Total, na.rm = TRUE))
+
+print(normal_passenger_trends)
+
+```
+
+Now comparing the normal travel trend with the major holiday trend to see how many travel the day of and how it compares to the other days.
+
+```{r}
+#| label: holiday-vs-normal_trend
+
+
 ```
