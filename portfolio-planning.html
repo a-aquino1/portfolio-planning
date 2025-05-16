@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>portfolio-planning</title>
+<title>Passenger Trend between School and Public Holidays</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -45,7 +45,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">portfolio-planning</h1>
+<h1 class="title">Passenger Trend between School and Public Holidays</h1>
 </div>
 
 
@@ -64,10 +64,10 @@ ul.task-list li input[type="checkbox"] {
 
 <section id="data-description" class="level2">
 <h2 class="anchored" data-anchor-id="data-description">Data Description</h2>
+<p>The data source for the data I will be exploring, Global Holidays and Travel, comes from the article “Global holiday datasets for Understanding seasonal human mobility and population dynamics” by Shengjie Lai (et al). tidytuesday/data/2024/2024-12-24/readme.md at main · rfordatascience/tidytuesday.</p>
+<p>The data is accessible though the WorldPop project and through Github. The Global Holiday Dataset contains structured data based on public and school holidays along with the airline passenger statistics. The variables are broken down as followed:</p>
 <ol type="1">
-<li><p>The data source for the data I will be exploring, Global Holidays and Travel, comes from the article “Global holiday datasets for Understanding seasonal human mobility and population dynamics” by Shengjie Lai (et al). The data is accessible though the WorldPop project and through Github.</p></li>
-<li><p>The Global Holiday Dataset contains structured data based on public and school holidays along with the airline passenger statistics. The variables are broken down as followed:</p>
-<p>global_holidays.csv</p>
+<li><p>global_holidays.csv</p>
 <ul>
 <li><p>ADM_name (string)</p></li>
 <li><p>ISO3 (String)</p></li>
@@ -92,27 +92,9 @@ ul.task-list li input[type="checkbox"] {
 <li>Do certain states or cities experience a greater travel surge on specific holidays?</li>
 </ol></li>
 </ol>
-<section id="data-visualization" class="level3">
-<h3 class="anchored" data-anchor-id="data-visualization">Data Visualization</h3>
-<ol type="1">
-<li>I want to focus on highlighting the correlations between holidays and travel patterns. I want to include multiple visuals of my chosen questions by incorporating the proper graph for each question.</li>
-<li>What do you want to highlight on your final visualizations in your research questions? How do you plan to do that? : I want to to ultimately include various visuals in my project. I want to include a bar graph to present a visual that compares the travel patterns of school holiday vs.&nbsp;public holidays. To visualize the oscillating numbers of passengers around holidays I would use a histogram and to visualize the surge of travel time around the holidays I would use a bar chart.</li>
-<li>what is missing from your data or would need to change in your data to create these visualization : I want to mainly focus on U.S holidays so I will need to manipulate the data to only include U.S holidays. Additionally I will need to specifically determine the daily passenger data.</li>
-</ol>
-</section>
 <section id="data-cleaning" class="level3">
 <h3 class="anchored" data-anchor-id="data-cleaning">Data Cleaning</h3>
-<ol type="1">
-<li>Yes, I may need to reformat variables into different types such as converting holiday and flight dates into standard date format. Since I will be focusing on U.S holidays I will need to remove any international holiday that is not recognized in the U.S.</li>
-<li>I don’t believe I will need to deal with missing data.</li>
-<li>Yes I will need to filter my data. Since I only want to focus on U.S holidays and their relevant flight patterns I will need to remove all the rows not related to U.S holidays. I will also need to ensure that I only work with data that focuses on flight patterns in the U.S, excluding any that are non-U.S countries. I will also need to filter the Holiday types into school or public holidays. Additionally I will need to filter airports that have a certain passenger capacity.</li>
-<li>Yes, I will need to create new variables such as the change in passenger size during holidays by finding the difference in holiday passenger size and normal passenger size.</li>
-<li>Yes, I think I may need to join my data since I am given to data sets.</li>
-<li>Yes, I can exclude the variables that to not pertain to any U.S base, whether it be holiday or airport travel pattern.</li>
-<li>I do not believe I will need to pivot my data in any way.</li>
-<li>Yes, I will need to summarize some variables such as the passenger size to determine the difference during school holiday, public holiday, and regular travel motion. I will need to determine the total passenger size by month. To determine the travel surge I will need to do something similar and find the percentage by finding the difference of passenger size during holidays and normal size before dividing it by the normal size and multiplying it by 100 to get a percentage. Lastly I will need to identify the highest passenger size before and after holidays.</li>
-<li>I don’t believe I need to fix any additional aspect of my data to create my data visualizations.</li>
-</ol>
+<p>Since I wanted to keep my data narrow and clean, I first determined I wanted to focus on U.S holidays and passenger data, so I filtered out the US by its abbreviations. Additionally since I noticed both data sets did not have matching variables for dates I went ahead and manipulated the date of the global_holiday to better be accommidated with the month and year variables of the monthly passenger dataset. As for the monthly passenger dataset the only cleaning I did was filtering only the US passenger data to keep my data the same.</p>
 <div class="cell">
 <div class="cell-output cell-output-stderr">
 <pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
@@ -164,41 +146,7 @@ dbl (6): Year, Month, Total, Domestic, International, Total_OS
 # ℹ 92 more rows</code></pre>
 </div>
 </div>
-<p>hfhfb</p>
-<div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 108 × 7
-   ISO3   Year Month Total Domestic International Total_OS
-   &lt;chr&gt; &lt;int&gt; &lt;int&gt; &lt;dbl&gt;    &lt;dbl&gt;         &lt;dbl&gt;    &lt;dbl&gt;
- 1 USA    2010     1 53043    45720          7323   95386.
- 2 USA    2010     2 49091    42634          6456   87790.
- 3 USA    2010     3 62735    54673          8062  111730.
- 4 USA    2010     4 60145    52738          7407  108069.
- 5 USA    2010     5 61941    54078          7863  111643.
- 6 USA    2010     6 65515    56939          8576  117370.
- 7 USA    2010     7 69078    59417          9662  123364.
- 8 USA    2010     8 66814    57645          9170  119523.
- 9 USA    2010     9 57842    50601          7241  104497.
-10 USA    2010    10 62648    55146          7501  113178.
-# ℹ 98 more rows</code></pre>
-</div>
-</div>
 <p>Since there was no recognized school holidays, as every school districts have their own calenar system, I chose to make a list of the most notable school break and vaugly when they are present or “celebrated”Since there was no recognized school holidays, as every school districts have their own calendar system, I chose to make a list of the most notable school break and vaugely when they are present or “celebrated”</p>
-<div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code>$`Spring Break`
-[1] "March"
-
-$`Summmer Vacation`
-[1] "June-August"
-
-$`Thanksgiving Break`
-[1] "November"
-
-$`Winter Break`
-[1] "December-January"</code></pre>
-</div>
-</div>
 <section id="explanation" class="level3">
 <h3 class="anchored" data-anchor-id="explanation">Explanation:</h3>
 <p>I wanted to focus on filtering the data I will mainly be working with such as working only with US based holiday data to connect it to relevant flight patterns. Additionally since I want to be comparing the flight patterns and how whether public or school holidays create a greater surge of passengers I decided to filter out the public holidays. As every school district follows a different calendar systems and may have unique holidays, I decided to make a list of the four major schools breaks that students may experience. As stated before since schools have dfferent calendars I decided to be vague on wen these breaks occur, an not focus on specifics since every school have different academic calendars.</p>
@@ -206,6 +154,7 @@ $`Winter Break`
 </section>
 <section id="travel-trends-by-holiday-type" class="level2">
 <h2 class="anchored" data-anchor-id="travel-trends-by-holiday-type">Travel Trends by Holiday Type</h2>
+<p>Based on the travel trends of school breaks and public holidays, by finding the average of the the geaph showcas</p>
 <div class="cell">
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning: There was 1 warning in `summarize()`.
@@ -222,19 +171,10 @@ Supply arguments directly to `.fns` through an anonymous function instead.
   # Now
   across(a:b, \(x) mean(x, na.rm = TRUE))</code></pre>
 </div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 5 × 5
-  Holiday_type    Total Domestic International Total_OS
-  &lt;chr&gt;           &lt;dbl&gt;    &lt;dbl&gt;         &lt;dbl&gt;    &lt;dbl&gt;
-1 Summer Break   72518.   62448.        10070.  130795.
-2 Spring Break   66722.   58110.         8612.  120337.
-3 Fall Break     64157.   56686.         7471.  115819.
-4 Public holiday 63031.   55187.         7844.  114484.
-5 Winter Break   61737.   53443.         8294.  111478.</code></pre>
-</div>
 </div>
 <section id="travel-trend" class="level4">
 <h4 class="anchored" data-anchor-id="travel-trend">Travel Trend</h4>
+<p>By specfically choosing to focus on the months typical school breaks occur in we can bridge the gap in missing data for registered school holidays. The schools breaks are categories per their respective month while public holidays are everything else that is not in the respective month of the school breaks. The graph depict a visual of the average monthly passengers per school break or holiday. It seems as though during summer break there is an increase of passengers. Apart from winter break it does seems that school breaks have an influence on how many people choose to travel.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
@@ -248,50 +188,16 @@ Supply arguments directly to `.fns` through an anonymous function instead.
 </section>
 <section id="how-passenger-numbers-fluctuate-around-major-u.s-holidays" class="level2">
 <h2 class="anchored" data-anchor-id="how-passenger-numbers-fluctuate-around-major-u.s-holidays">How Passenger Numbers Fluctuate Around Major U.S Holidays</h2>
+<p>Solely focusing on the most major holidays celebrated in the U.S we can determine the average passengers that traveled. Additionally choosing to not include the day after or before was a choice made to be able to determine how many travel the day of the major holiday.</p>
+<p>By excluding the major holidays celebrated in the United States then well will be able to obtain the average or normal rate of passengers traveled.</p>
+<p>Now comparing the normal travel trend with the major holiday trend to see how many travel the day of and how it compares to the other days. There are certain peaks on the graph indicating a major holiday showed an increase in passengers on flights. With the highest peak being around July we can assume fourth of July is a holiday in which many choose to travel, it is also during the summer which reinforces the idea of the previous graph, summer being a popular time to travel.</p>
 <div class="cell">
-<div class="cell-output cell-output-stderr">
-<pre><code>`summarise()` has grouped output by 'Month'. You can override using the
-`.groups` argument.</code></pre>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="portfolio-planning_files/figure-html/holiday-vs-normal_trend-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
 </div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 46 × 3
-# Groups:   Month [6]
-   Month  Year avg_passengers
-   &lt;dbl&gt; &lt;dbl&gt;          &lt;dbl&gt;
- 1     1  2017          62949
- 2     5  2010          61941
- 3     5  2011          64348
- 4     5  2012          64126
- 5     5  2013          65208
- 6     5  2014          66912
- 7     5  2015          69353
- 8     5  2016          71873
- 9     5  2017          74011
-10     5  2018          77706
-# ℹ 36 more rows</code></pre>
-</div>
-</div>
-<div class="cell" data-lable="normal-passenger-numbers">
-<div class="cell-output cell-output-stderr">
-<pre><code>`summarise()` has grouped output by 'Month'. You can override using the
-`.groups` argument.</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 78 × 3
-# Groups:   Month [10]
-   Month  Year avg_passengers
-   &lt;dbl&gt; &lt;dbl&gt;          &lt;dbl&gt;
- 1     1  2010          53043
- 2     1  2011          54179
- 3     1  2012          54929
- 4     1  2013          55797
- 5     1  2014          56265
- 6     1  2015          58229
- 7     1  2016          61202
- 8     1  2017          62949
- 9     1  2018          64786
-10     2  2010          49091
-# ℹ 68 more rows</code></pre>
 </div>
 </div>
 </section>

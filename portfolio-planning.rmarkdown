@@ -2,6 +2,8 @@
 title: "Passenger Trend between School and Public Holidays"
 ---
 
+
+
 ## Data Description
 
 The data source for the data I will be exploring, Global Holidays and Travel, comes from the article "Global holiday datasets for Understanding seasonal human mobility and population dynamics" by Shengjie Lai (et al). tidytuesday/data/2024/2024-12-24/readme.md at main · rfordatascience/tidytuesday.
@@ -46,6 +48,8 @@ The data is accessible though the WorldPop project and through Github. The Globa
 
 Since I wanted to keep my data narrow and clean, I first determined I wanted to focus on U.S holidays and passenger data, so I filtered out the US by its abbreviations. Additionally since I noticed both data sets did not have matching variables for dates I went ahead and manipulated the date of the global_holiday to better be accommidated with the month and year variables of the monthly passenger dataset. As for the monthly passenger dataset the only cleaning I did was filtering only the US passenger data to keep my data the same.
 
+
+
 ```{r}
 #| label: global-holiday-and-travel-data-setup
 #| echo: FALSE
@@ -68,7 +72,11 @@ monthly_passengers <- readr::read_csv(path) |>
   )
 ```
 
+
+
 ## Data Cleaning and Preparation
+
+
 
 ```{r}
 #| label: U.S-holidays
@@ -93,7 +101,11 @@ monthly_passengers_cleaned <- monthly_passengers |>
 #filtered to get only us passengers
 ```
 
+
+
 Since there was no recognized school holidays, as every school districts have their own calenar system, I chose to make a list of the most notable school break and vaugly when they are present or "celebrated"Since there was no recognized school holidays, as every school districts have their own calendar system, I chose to make a list of the most notable school break and vaugely when they are present or "celebrated"
+
+
 
 ```{r}
 #| label: us_school_holidays
@@ -106,6 +118,8 @@ us_school_breaks <- list("Spring Break" = "March",
 
 ```
 
+
+
 ### Explanation:
 
 I wanted to focus on filtering the data I will mainly be working with such as working only with US based holiday data to connect it to relevant flight patterns. Additionally since I want to be comparing the flight patterns and how whether public or school holidays create a greater surge of passengers I decided to filter out the public holidays. As every school district follows a different calendar systems and may have unique holidays, I decided to make a list of the four major schools breaks that students may experience. As stated before since schools have dfferent calendars I decided to be vague on wen these breaks occur, an not focus on specifics since every school have different academic calendars.
@@ -113,6 +127,8 @@ I wanted to focus on filtering the data I will mainly be working with such as wo
 ## Travel Trends by Holiday Type
 
 Based on the travel trends of school breaks and public holidays, by finding the average of the the geaph showcas
+
+
 
 ```{r}
 #| label: travel-trends-by-school-holiday
@@ -135,9 +151,13 @@ summarize(across(c(Total, Domestic, International, Total_OS), mean, na.rm = TRUE
   
 ```
 
+
+
 #### Travel Trend
 
 By specfically choosing to focus on the months typical school breaks occur in we can bridge the gap in missing data for registered school holidays. The schools breaks are categories per their respective month while public holidays are everything else that is not in the respective month of the school breaks. The graph depict a visual of the average monthly passengers per school break or holiday. It seems as though during summer break there is an increase of passengers. Apart from winter break it does seems that school breaks have an influence on how many people choose to travel.
+
+
 
 ```{r}
 #| label: travel-trends
@@ -153,9 +173,13 @@ ggplot(travel_trend, aes(x = Holiday_type,
   theme_bw()
 ```
 
+
+
 ## How Passenger Numbers Fluctuate Around Major U.S Holidays
 
 Solely focusing on the most major holidays celebrated in the U.S we can determine the average passengers that traveled. Additionally choosing to not include the day after or before was a choice made to be able to determine how many travel the day of the major holiday.
+
+
 
 ```{r}
 #| label: major-holiday-passenger-numbers
@@ -177,7 +201,11 @@ major_holiday_trend <- monthly_passengers_cleaned |>
 
 ```
 
+
+
 By excluding the major holidays celebrated in the United States then well will be able to obtain the average or normal rate of passengers traveled.
+
+
 
 ```{r}
 #| lable: normal-passenger-numbers
@@ -196,7 +224,11 @@ normal_passenger_trends <- monthly_passengers_cleaned |>
 
 ```
 
+
+
 Now comparing the normal travel trend with the major holiday trend to see how many travel the day of and how it compares to the other days. There are certain peaks on the graph indicating a major holiday showed an increase in passengers on flights. With the highest peak being around July we can assume fourth of July is a holiday in which many choose to travel, it is also during the summer which reinforces the idea of the previous graph, summer being a popular time to travel.
+
+
 
 ```{r}
 #| label: holiday-vs-normal_trend
@@ -220,3 +252,4 @@ ggplot() +
 #searched how to combine datasets into one graph used code from https://www.geeksforgeeks.org/combine-two-ggplot2-plots-from-different-dataframe-in-r/ as a loose guidline.
 
 ```
+
