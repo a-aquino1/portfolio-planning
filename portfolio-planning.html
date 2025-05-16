@@ -66,7 +66,7 @@ ul.task-list li input[type="checkbox"] {
 <h2 class="anchored" data-anchor-id="data-description">Data Description</h2>
 <ol type="1">
 <li><p>The data source for the data I will be exploring, Global Holidays and Travel, comes from the article “Global holiday datasets for Understanding seasonal human mobility and population dynamics” by Shengjie Lai (et al). The data is accessible though the WorldPop project and through Github.</p></li>
-<li><p>The Global Holiday Dataset contains structured data based on public and school holidays along with the airline passenger statistics. The vvariables are broken down as followed:</p>
+<li><p>The Global Holiday Dataset contains structured data based on public and school holidays along with the airline passenger statistics. The variables are broken down as followed:</p>
 <p>global_holidays.csv</p>
 <ul>
 <li><p>ADM_name (string)</p></li>
@@ -96,8 +96,8 @@ ul.task-list li input[type="checkbox"] {
 <h3 class="anchored" data-anchor-id="data-visualization">Data Visualization</h3>
 <ol type="1">
 <li>I want to focus on highlighting the correlations between holidays and travel patterns as well as highlight any regional differences for travel patterns. I want to include multiple visuals of my chosen questions by incorporating the proper graph for each question.</li>
-<li>What do you want to highlight on your final visualizations in your research questions? How do you plan to do that? : I want to to ultimatley include various visuals in my project. I want to include a line graph to present a visual graph that compares the travel patterns of school holiday vs.&nbsp;public holidays. To visualize the oscillating numbers of passengers around holidays I would use a histogram and to visualize the surge of travel time around the holidays I would use a choropleth map.</li>
-<li>what is missing from your data orr would need to change in your data yo create these visualization : I want to mainly focus on U.S holidays so I will need to manipulate the data to only include U.S holidays. Additionally I will need to specifically determine the daily passenger data.</li>
+<li>What do you want to highlight on your final visualizations in your research questions? How do you plan to do that? : I want to to ultimately include various visuals in my project. I want to include a line graph to present a visual graph that compares the travel patterns of school holiday vs.&nbsp;public holidays. To visualize the oscillating numbers of passengers around holidays I would use a histogram and to visualize the surge of travel time around the holidays I would use a bar chart.</li>
+<li>what is missing from your data or would need to change in your data to create these visualization : I want to mainly focus on U.S holidays so I will need to manipulate the data to only include U.S holidays. Additionally I will need to specifically determine the daily passenger data.</li>
 </ol>
 </section>
 <section id="data-cleaning" class="level3">
@@ -105,12 +105,12 @@ ul.task-list li input[type="checkbox"] {
 <ol type="1">
 <li>Yes, I may need to reformat variables into different types such as converting holiday and flight dates into standard date format. Since I will be focusing on U.S holidays I will need to remove any international holiday that is not recognized in the U.S.</li>
 <li>I don’t believe I will need to deal with missing data.</li>
-<li>Yes I will need to filter my data. Since I only want to focus on U.S holidays and their relevent flight patterns I will need to remove all the rows not related to U.S holidays. I will also need to ensure that I only work with data that focuses on flight patterns in the U.S, excluding any that are non-U.S countries. I will also need to filter the Holiday types into school or public holidays. Additionally I will need to filter airports that have a certain passenger capacity.</li>
+<li>Yes I will need to filter my data. Since I only want to focus on U.S holidays and their relevant flight patterns I will need to remove all the rows not related to U.S holidays. I will also need to ensure that I only work with data that focuses on flight patterns in the U.S, excluding any that are non-U.S countries. I will also need to filter the Holiday types into school or public holidays. Additionally I will need to filter airports that have a certain passenger capacity.</li>
 <li>Yes, I will need to create new variables such as the change in passenger size during holidays by finding the difference in holiday passenger size and normal passenger size.</li>
-<li>Yes, I think I may need to join my data since i am given to data sets.</li>
+<li>Yes, I think I may need to join my data since I am given to data sets.</li>
 <li>Yes, I can exclude the variables that to not pertain to any U.S base, whether it be holiday or airport travel pattern.</li>
-<li>I don not believe I will need to pivot my data in any way.</li>
-<li>Yes, I will need to summarize some variables such as the passenger size to determine the diffence during school holiday, public holiday, and regular travel motion. I will need to determine the total passenger size by month. To determine the travel surge I will need to do something similar and find the percentage by finding the difference of passenger size during holidays and normal size before dividing it by the normal size and multiplying it by 100 to get a percentage. Lastly I will need to identify the highest passenger size before and after holidays.</li>
+<li>I do not believe I will need to pivot my data in any way.</li>
+<li>Yes, I will need to summarize some variables such as the passenger size to determine the difference during school holiday, public holiday, and regular travel motion. I will need to determine the total passenger size by month. To determine the travel surge I will need to do something similar and find the percentage by finding the difference of passenger size during holidays and normal size before dividing it by the normal size and multiplying it by 100 to get a percentage. Lastly I will need to identify the highest passenger size before and after holidays.</li>
 <li>I don’t believe I need to fix any additional aspect of my data to create my data visualizations.</li>
 </ol>
 <div class="cell">
@@ -131,18 +131,64 @@ Delimiter: ","
 chr (5): ADM_name, ISO3, Date, Name, Type
 
 ℹ Use `spec()` to retrieve the full column specification for this data.
-ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
-Rows: 7242 Columns: 7
-── Column specification ────────────────────────────────────────────────────────
-Delimiter: ","
-chr (1): ISO3
-dbl (6): Year, Month, Total, Domestic, International, Total_OS
-
-ℹ Use `spec()` to retrieve the full column specification for this data.
 ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
 </div>
 </div>
 </section>
+</section>
+<section id="data-cleaning-and-preparation" class="level2">
+<h2 class="anchored" data-anchor-id="data-cleaning-and-preparation">Data Cleaning and Preparation</h2>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1,079 × 5
+   ADM_name ISO3  Date       Name                          Type      
+   &lt;chr&gt;    &lt;chr&gt; &lt;date&gt;     &lt;chr&gt;                         &lt;chr&gt;     
+ 1 Us       USA   2010-04-13 National Library Workers' Day Observance
+ 2 Us       USA   2011-04-12 National Library Workers' Day Observance
+ 3 Us       USA   2012-04-17 National Library Workers' Day Observance
+ 4 Us       USA   2013-04-16 National Library Workers' Day Observance
+ 5 Us       USA   2014-04-15 National Library Workers' Day Observance
+ 6 Us       USA   2015-04-14 National Library Workers' Day Observance
+ 7 Us       USA   2016-04-12 National Library Workers' Day Observance
+ 8 Us       USA   2017-04-11 National Library Workers' Day Observance
+ 9 Us       USA   2018-04-10 National Library Workers' Day Observance
+10 Us       USA   2019-04-09 National Library Workers' Day Observance
+# ℹ 1,069 more rows</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 102 × 5
+   ADM_name ISO3  Date       Name                       Type          
+   &lt;chr&gt;    &lt;chr&gt; &lt;date&gt;     &lt;chr&gt;                      &lt;chr&gt;         
+ 1 Us       USA   2010-01-18 Martin Luther King Jr. Day Public holiday
+ 2 Us       USA   2010-02-15 Presidents' Day            Public holiday
+ 3 Us       USA   2010-05-31 Memorial Day               Public holiday
+ 4 Us       USA   2010-07-04 Independence Day           Public holiday
+ 5 Us       USA   2010-07-05 Independence Day observed  Public holiday
+ 6 Us       USA   2010-09-06 Labor Day                  Public holiday
+ 7 Us       USA   2010-10-11 Columbus Day               Public holiday
+ 8 Us       USA   2010-11-11 Veterans Day               Public holiday
+ 9 Us       USA   2010-11-25 Thanksgiving Day           Public holiday
+10 Us       USA   2010-12-24 Christmas Day observed     Public holiday
+# ℹ 92 more rows</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>$`Spring Break`
+[1] "March"
+
+$`Summmer Vacation`
+[1] "June-August"
+
+$`Thanksgiving Break`
+[1] "November"
+
+$`Winter Break`
+[1] "December-January"</code></pre>
+</div>
+</div>
 </section>
 
 </main>
